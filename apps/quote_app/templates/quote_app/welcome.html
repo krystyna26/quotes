@@ -66,7 +66,7 @@
                 {% csrf_token %}
             Quoted by:<input type="text" name="author"><br>
             Message: <input type="text" name="content"><br>
-            <input type="hidden" name="user" value="{{user}}">
+            <input type="hidden" name="user" value="{{user.id}}">
             <input type='submit' value='Add Quote'/>
             </form>
         </div>

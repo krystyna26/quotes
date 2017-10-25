@@ -52,25 +52,25 @@ class UserManager(models.Manager):
             return new_user
         return errors
 
-# class QuoteManager(models.Manager):
-#     def quote_validator(self, postData):
-#         errors = []
-#         # check quote and messange length
-#         if len(postData['author']) < 3:
-#             errors.append("'quoted by' requires more than 3 characters")
-#         if len(postData['content']) < 10:
-#             errors.append("'message' requires more than 10 characters")
-        # if errors:
-#         #     return errors
-#         # if not errors:
-#         #     # user = User.objects.get(id=request.session['user_id'])
-#         #     quote = Quote.objects.create(
-#         #         content = postData['content'],
-#         #         author = postData['author'],
-#         #         uploader = postData['user'],
-#         #         favBoolean = False 
-#         #     )
-#         #     return quote
+class QuoteManager(models.Manager):
+    def quote_validator(self, postData):
+        errors = []
+        # check quote and messange length
+        if len(postData['author']) < 3:
+            errors.append("'quoted by' requires more than 3 characters")
+        if len(postData['content']) < 10:
+            errors.append("'message' requires more than 10 characters")
+        if errors:
+            return errors
+        if not errors:
+            user = User.objects.get(id=postData['user.id'])
+            quote = Quote.objects.create(
+                content = postData['content'],
+                author = postData['author'],
+                uploader = user,
+                favBoolean = False 
+            )
+            return quote
         return errors
 
 class User(models.Model):
@@ -90,6 +90,6 @@ class Quote(models.Model):
     favorite = models.ManyToManyField(User, related_name='liked_quotes')
     favBoolean = models.BooleanField(blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    # objects = QuoteManager()
+    objects = QuoteManager()
     def __repr__(self):
         return "Quote: --{}, --uploader {}".format(self.content, self.uploader)

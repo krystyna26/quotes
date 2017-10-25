@@ -42,23 +42,23 @@ def success(request):
     return render(request, "quote_app/welcome.html", context)
     
 def addQuote(request):
-    # result = Quote.objects.quote_validator(request.POST)
+    result = Quote.objects.quote_validator(request.POST)
     # user = User.objects.get(id=request.session['user_id'])
 
-    # if type(result) == list:
-    #     for err in result:
-    #         messages.error(request, err, extra_tags=addQuote)
-    #     return redirect('/success')
-    # messages.success(request, "Successfully added quote!")
+    if type(result) == list:
+        for err in result:
+            messages.error(request, err, extra_tags=addQuote)
+        return redirect('/success')
+    messages.success(request, "Successfully added quote!")
 
     user = User.objects.get(id=request.session['user_id'])
     # create
-    quote = Quote.objects.create(
-        content = request.POST['content'],
-        author = request.POST['author'],
-        uploader = user,
-        favBoolean = False 
-    )
+    # quote = Quote.objects.create(
+    #     content = request.POST['content'],
+    #     author = request.POST['author'],
+    #     uploader = user,
+    #     favBoolean = False 
+    # )
     return redirect('/quote')
     
 
