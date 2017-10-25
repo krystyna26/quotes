@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User page</title>
+</head>
+<body>
+    <div>
+        <a href="/logout" type="button" class="btn btn-link">Logout</a></a>
+        <a href="/success" type="button" class="btn btn-link">Dashboard</a>
+    </div>
+    <div>
+        <h1>Posts by: {{user.first_name}}</h1>
+        <h2>Count: {{countQuotes}}</h2>
+    </div>
+    <div>
+        {% for quo in quotesMade %}
+        <h3>{{quo.author}}</h3>
+        <h4>{{quo.content}}</h4>
+        {% endfor %}
+    </div>
+</body>
+</html>

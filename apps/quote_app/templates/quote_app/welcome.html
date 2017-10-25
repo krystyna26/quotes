@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <title>Quotes</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" styles="display=inline">
+            <a class="navbar-brand">Welcome {{user.first_name}}!</a>
+            <div>
+                <a href="/logout" type="button" class="btn btn-link">Logout</a>
+            </div>
+        </nav>
+         <div>
+            <h2>Quotable quotes:</h2>
+            <div class="list-group">
+                {% for quote in quote %}
+                    {% if quote.favBoolean == False %}
+                    <div class="list-group-item list-group-item-action flex-column align-items-start" >
+                        <p class="mb-1">{{quote.author}} says: {{quote.content}}</p>
+                        <div class="d-flex w-100 justify-content-between" class="w-50 p-3">
+                            <small class="text-muted">Posted by <a href="/users/{{quote.uploader.id}}">{{quote.uploader.first_name}}</a> on {{quote.created_at}}</small>                    
+                        </div>
+                    <form action='/moveToFav/{{quote.id}}' method='post'>
+                        {% csrf_token %}
+                        <input type='submit' value='Add to My Favorite'/>
+                    </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <h2>Your favorites:</h2>
+            <div class="list-group">
+                {% for quote in quote %}
+                    {% if quote.favBoolean == True %}
+                    <div class="list-group-item list-group-item-action flex-column align-items-start" >
+                    <p class="mb-1">{{quote.author}} says: {{quote.content}}</p>
+                    <div class="d-flex w-100 justify-content-between" class="w-50 p-3">
+                        <small class="text-muted">Posted by <a href="/users/{{quote.uploader.id}}">{{quote.uploader.first_name}}</a> on {{quote.created_at}}</small>                    
+                    </div>
+                    <form action='/moveToQuotes/{{quote.id}}' method='post'>
+                        {% csrf_token %}
+                        <input type='submit' value='Remove from my list'/>
+                    </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div> 
+        <div>
+            <h1>Contribute a Quote:</h1>
+            <div class=red>
+                {% if messages %}
+                    {% for message in messages %}
+                        {%if "addQuote" in message.tags %}
+                          <h4 style="color=red">{{message}}</h4>
+                        {%endif%}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <form action='/addQuote' method='post'>
+                {% csrf_token %}
+            Quoted by:<input type="text" name="author"><br>
+            Message: <input type="text" name="content"><br>
+            <input type="hidden" name="user" value="{{user}}">
+            <input type='submit' value='Add Quote'/>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
