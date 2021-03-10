@@ -12,17 +12,18 @@
                 <a href="/logout" type="button" class="btn btn-link">Logout</a>
             </div>
         </nav>
-         <div>
+        <div class=row>
+        <div class="col-lg-6">
             <h2>Quotable quotes:</h2>
             <div class="list-group">
                 {% for quote in quote %}
-                    {% if quote.favBoolean == False %}
+                {% if quote not in favoritesQuote %}
                     <div class="list-group-item list-group-item-action flex-column align-items-start" >
                         <p class="mb-1">{{quote.author}} says: {{quote.content}}</p>
                         <div class="d-flex w-100 justify-content-between" class="w-50 p-3">
                             <small class="text-muted">Posted by <a href="/users/{{quote.uploader.id}}">{{quote.uploader.first_name}}</a> on {{quote.created_at}}</small>                    
                         </div>
-                    <form action='/moveToFav/{{quote.id}}' method='post'>
+                    <form action='/moveToFav/{{quote.id}}/{{user.id}}' method='post'>
                         {% csrf_token %}
                         <input type='submit' value='Add to My Favorite'/>
                     </form>
@@ -31,33 +32,29 @@
                 {% endfor %}
             </div>
         </div>
-
-        <div>
+        <div class="col-lg-6">
             <h2>Your favorites:</h2>
             <div class="list-group">
-                {% for quote in quote %}
-                    {% if quote.favBoolean == True %}
-                    <div class="list-group-item list-group-item-action flex-column align-items-start" >
-                    <p class="mb-1">{{quote.author}} says: {{quote.content}}</p>
-                    <div class="d-flex w-100 justify-content-between" class="w-50 p-3">
-                        <small class="text-muted">Posted by <a href="/users/{{quote.uploader.id}}">{{quote.uploader.first_name}}</a> on {{quote.created_at}}</small>                    
-                    </div>
-                    <form action='/moveToQuotes/{{quote.id}}' method='post'>
-                        {% csrf_token %}
-                        <input type='submit' value='Remove from my list'/>
-                    </form>
-                    </div>
-                    {% endif %}
-                {% endfor %}
+                    {% for favQuote in favoritesQuote %}
+                        <div class="list-group-item list-group-item-action flex-column align-items-start" >
+                        <p class="mb-1">{{favQuote.author}} says: {{favQuote.content}}</p>
+                        <div class="d-flex w-100 justify-content-between" class="w-50 p-3">
+                            <small class="text-muted">Posted by <a href="/users/{{favQuote.uploader.id}}">{{favQuote.uploader.first_name}}</a> on {{favQuote.created_at}}</small>                    
+                        </div>
+                        <form action='/moveToQuotes/{{favQuote.id}}/{{user.id}}' method='post'>
+                            {% csrf_token %}
+                            <input type='submit' value='Remove from my list'/>
+                        </form>
+                        </div>
+                    {% endfor %}
             </div>
-        </div> 
         <div>
             <h1>Contribute a Quote:</h1>
             <div class=red>
                 {% if messages %}
                     {% for message in messages %}
                         {%if "addQuote" in message.tags %}
-                          <h4 style="color=red">{{message}}</h4>
+                          <h4 style="color:red">{{message}}</h4>
                         {%endif%}
                     {% endfor %}
                 {% endif %}
@@ -70,6 +67,7 @@
             <input type='submit' value='Add Quote'/>
             </form>
         </div>
+    </div> 
     </div>
 </body>
 </html>

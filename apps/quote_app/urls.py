@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^addQuote$', views.addQuote),
     url(r'^quote$', views.success),
     url(r'^users/(?P<id>\d+)$', views.showuser),
-    url(r'^moveToFav/(?P<quote_id>\d+)$', views.moveToFav),
-    url(r'^moveToQuotes/(?P<quote_id>\d+)$', views.moveToQuotes),
+    url(r'^moveToFav/(?P<quote_id>\d+)/(?P<user_id>\d+)$', views.moveToFav),
+    url(r'^moveToQuotes/(?P<quote_id>\d+)/(?P<user_id>\d+)$', views.moveToQuotes),
 ]

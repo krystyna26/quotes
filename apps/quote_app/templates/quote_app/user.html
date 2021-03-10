@@ -12,10 +12,12 @@
         <h1>Posts by: {{user.first_name}}</h1>
         <h2>Count: {{countQuotes}}</h2>
     </div>
-    <div>
+
+    <div class="list-group">
         {% for quo in quotesMade %}
-        <h3>{{quo.author}}</h3>
-        <h4>{{quo.content}}</h4>
+        <div class="list-group-item list-group-item-action flex-column align-items-start" >
+            <p class="mb-1">{{quo.author}}: {{quo.content}}</p>
+        </div>
         {% endfor %}
     </div>
 </body>
